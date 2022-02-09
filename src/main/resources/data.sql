@@ -1,0 +1,1 @@
+INSERT INTO Questions(id, question, answer, level, technology) VALUES (1, "test question", "test answer", "JUNIOR", "JAVA");
