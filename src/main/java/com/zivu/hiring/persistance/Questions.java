@@ -6,7 +6,7 @@ import com.zivu.hiring.model.Technology;
 import jakarta.persistence.*;
 
 /**
- * Entity class used to fetch DB questions.
+ * Entity class that saves question, answer for that question, level of complexity and technology category.
  */
 @Entity
 public class Questions {

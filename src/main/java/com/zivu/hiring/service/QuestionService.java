@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Service that will process received from DB questions and returns to Controller.
+ * Queries DB for interview questions with specified level of complexity (JUNIOR, MIDDLE, SENIOR)
+ * and requested technologies.
  */
 @Slf4j
 @Service
@@ -24,7 +25,7 @@ public class QuestionService {
     private final QuestionRepository repository;
 
     /**
-     * Method that fetches stored interview questions through the repository.
+     * Fetches stored interview questions through the repository interface.
      *
      * @param level         - represents complexity of questions: JUNIOR, MIDDLE, SENIOR.
      * @param hasJava       - points whether Java questions should be searched for.
@@ -34,14 +35,14 @@ public class QuestionService {
      * @return list of interview questions along with answers, level of complexity and technology involved.
      */
     public List<QuestionData> findQuestions(@NonNull Level level, boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
-        List<Technology> technologies = createTechnologies(hasJava, hasSpring, hasSql, hasJavaScript);
+        List<Technology> technologies = collectRequestedTechnologies(hasJava, hasSpring, hasSql, hasJavaScript);
         log.info("retrieving interview questions from DB");
         List<QuestionData> questions = repository.findByLevelAndTechnologyIn(level, technologies);
         log.info("successfully retrieved questions from DB");
         return questions;
     }
 
-    private List<Technology> createTechnologies(boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
+    private List<Technology> collectRequestedTechnologies(boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
         List<Technology> technologies = new ArrayList<>(4);
         if (hasJava) {
             technologies.add(Technology.JAVA);
