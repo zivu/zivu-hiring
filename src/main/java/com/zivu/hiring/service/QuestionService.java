@@ -34,8 +34,8 @@ public class QuestionService {
      * @return list of interview questions along with answers, level of complexity and technology involved.
      */
     public List<QuestionData> findQuestions(@NonNull Level level, boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
-        log.info("retrieving interview questions from DB");
         List<Technology> technologies = createTechnologies(hasJava, hasSpring, hasSql, hasJavaScript);
+        log.info("retrieving interview questions from DB");
         List<QuestionData> questions = repository.findByLevelAndTechnologyIn(level, technologies);
         log.info("successfully retrieved questions from DB");
         return questions;

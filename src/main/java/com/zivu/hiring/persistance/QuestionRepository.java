@@ -13,7 +13,7 @@ import java.util.List;
  * Repository interface used to query DB for interview questions.
  */
 @Repository
-public interface QuestionRepository extends JpaRepository<Question, Long> {
+public interface QuestionRepository extends JpaRepository<Questions, Long> {
 
     List<QuestionData> findByLevelAndTechnologyIn(Level level, Collection<Technology> technologies);
     
