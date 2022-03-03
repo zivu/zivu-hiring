@@ -1,1 +1,1 @@
-INSERT INTO Questions(id, question, answer, level, technology) VALUES (1, 'test question', 'test answer', 'JUNIOR', 'JAVA');
+INSERT INTO Questions(id, question, answer, level, technology) VALUES (1, 'How API composition pattern works?', 'Implement a query that retrieves data from several services by querying each service via its API and combining the results', 'SENIOR', 'JAVA');
