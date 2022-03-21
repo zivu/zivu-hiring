@@ -12,6 +12,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+/**
+ * Integration tests that ensure the correct work of REST API.
+ */
 @SpringBootTest
 @ExtendWith({SpringExtension.class})
 class ZivuHiringApplicationTests {
@@ -29,7 +35,9 @@ class ZivuHiringApplicationTests {
 	@Test
 	public void contextLoads() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/questions"))
-				.andExpect(MockMvcResultMatchers.status().isOk());
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(jsonPath("$[0].level", is("JUNIOR")))
+				.andExpect(jsonPath("$[0].technology", is("JAVA")));
 	}
 
 }

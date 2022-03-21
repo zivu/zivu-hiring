@@ -17,6 +17,7 @@ public class Questions {
 
     private String question;
 
+    @Column(length = 1000)
     private String answer;
 
     @Enumerated(EnumType.STRING)
