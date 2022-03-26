@@ -1,8 +1,10 @@
 package com.zivu.hiring.service;
 
+import com.zivu.hiring.converter.QuestionToQuestionDataConverter;
 import com.zivu.hiring.model.Level;
 import com.zivu.hiring.model.QuestionData;
 import com.zivu.hiring.model.Technology;
+import com.zivu.hiring.persistance.Question;
 import com.zivu.hiring.persistance.QuestionRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.List;
 public class QuestionService {
 
     private final QuestionRepository repository;
+    private final QuestionToQuestionDataConverter converter;
 
     /**
      * Fetches stored interview questions through the repository interface.
@@ -37,9 +40,26 @@ public class QuestionService {
     public List<QuestionData> findQuestions(@NonNull Level level, boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
         List<Technology> technologies = collectRequestedTechnologies(hasJava, hasSpring, hasSql, hasJavaScript);
         log.info("retrieving interview questions from DB");
-        List<QuestionData> questions = repository.findByLevelAndTechnologyIn(level, technologies);
+        List<Question> questions = repository.findByLevelAndTechnologyIn(level, technologies);
         log.info("successfully retrieved questions from DB");
-        return questions;
+        return convertToQuestionData(questions);
+    }
+
+    /**
+     * Requests all questions (all levels and technologies) form DB.
+     * @return all available interview Questions.
+     */
+    public List<QuestionData> findAllQuestions() {
+        log.debug("Requesting all questions from DB");
+        List<Question> questionList = repository.findAll();
+        log.debug("All questions were successfully requested");
+        return convertToQuestionData(questionList);
+    }
+
+    private List<QuestionData> convertToQuestionData(List<Question> questions) {
+        List<QuestionData> questionData = new ArrayList<>(questions.size());
+        questions.forEach(question -> questionData.add(converter.convert(question)));
+        return questionData;
     }
 
     private List<Technology> collectRequestedTechnologies(boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
@@ -59,5 +79,4 @@ public class QuestionService {
         log.debug("The following technology list will be queried against DB: {}", technologies);
         return technologies;
     }
-
 }

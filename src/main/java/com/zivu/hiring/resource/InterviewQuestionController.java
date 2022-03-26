@@ -45,15 +45,20 @@ public class InterviewQuestionController {
      * @return interview questions and answers in a JSON form.
      */
     @GetMapping("/questions")
-    public List<QuestionData> queryInterviewQuestions(@RequestParam(defaultValue = "JUNIOR") Level level,
-                                                      @RequestParam(required = false, defaultValue = "true") boolean hasJava,
+    public List<QuestionData> queryInterviewQuestions(@RequestParam(required = false) Level level,
+                                                      @RequestParam(required = false) boolean hasJava,
                                                       @RequestParam(required = false) boolean hasSpring,
                                                       @RequestParam(required = false) boolean hasSql,
                                                       @RequestParam(required = false) boolean hasJavaScript) {
         log.debug("received the following query params: level = {}, hasJava = {}, " +
                 "hasSpring = {}, hasSql = {}, hasJavaScript = {}", level, hasJava, hasSpring, hasSql, hasJavaScript);
-        List<QuestionData> questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
-        log.debug("collected the following questions for an interview: {}", questions);
+        List<QuestionData> questions;
+        if (null == level) {
+            questions = service.findAllQuestions();
+        } else {
+            questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
+        }
+        log.debug("collected the following questions for the interview: {}", questions);
         return questions;
     }
 
