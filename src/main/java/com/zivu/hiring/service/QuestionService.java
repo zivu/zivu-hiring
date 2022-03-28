@@ -50,19 +50,22 @@ public class QuestionService {
      * @return all available interview Questions.
      */
     public List<QuestionData> findAllQuestions() {
-        log.debug("Requesting all questions from DB");
+        log.info("Requesting all questions from DB");
         List<Question> questionList = repository.findAll();
-        log.debug("All questions were successfully requested");
+        log.debug("Successfully requested the following questions: {}", questionList);
         return convertToQuestionData(questionList);
     }
 
     private List<QuestionData> convertToQuestionData(List<Question> questions) {
+        log.info("Converting a list of Question to QuestionData type");
         List<QuestionData> questionData = new ArrayList<>(questions.size());
         questions.forEach(question -> questionData.add(converter.convert(question)));
+        log.debug("Tre result of conversion the following: {}", questionData);
         return questionData;
     }
 
     private List<Technology> collectRequestedTechnologies(boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
+        log.info("Preparing a list of technologies for DB request");
         List<Technology> technologies = new ArrayList<>(4);
         if (hasJava) {
             technologies.add(Technology.JAVA);
@@ -79,4 +82,5 @@ public class QuestionService {
         log.debug("The following technology list will be queried against DB: {}", technologies);
         return technologies;
     }
+
 }

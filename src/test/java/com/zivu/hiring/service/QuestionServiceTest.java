@@ -1,5 +1,6 @@
 package com.zivu.hiring.service;
 
+import com.zivu.hiring.converter.QuestionToQuestionDataConverter;
 import com.zivu.hiring.model.Level;
 import com.zivu.hiring.model.QuestionData;
 import com.zivu.hiring.persistance.Question;
@@ -15,12 +16,15 @@ import java.util.List;
 import static com.zivu.hiring.model.Level.*;
 import static com.zivu.hiring.model.Technology.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * The class contains unit tests that ensure the correct work of QuestionService.
  */
 class QuestionServiceTest {
+
+    @Mock
+    private QuestionToQuestionDataConverter converter;
 
     @Mock
     private QuestionRepository repository;
@@ -177,6 +181,34 @@ class QuestionServiceTest {
         assertTrue(questions.contains(springQuestion));
         assertTrue(questions.contains(sqlQuestion));
         assertTrue(questions.contains(jsQuestion));
+    }
+
+    @Test
+    public void shouldReturnAllQuestionsAvailable() {
+        //given
+        Question javaTestQuestion = new Question(1L, "test question", "test answer", JUNIOR, JAVA);
+        Question springTestQuestion = new Question(2L, "spring test question", "spring test answer", SENIOR, JAVA);
+        QuestionData javaQuestionData = new QuestionData(javaTestQuestion.getQuestion(), javaTestQuestion.getAnswer(), javaTestQuestion.getLevel(), javaTestQuestion.getTechnology());
+        QuestionData springQuestionData = new QuestionData(springTestQuestion.getQuestion(), springTestQuestion.getAnswer(), springTestQuestion.getLevel(), springTestQuestion.getTechnology());
+        when(repository.findAll()).thenReturn(List.of(javaTestQuestion, springTestQuestion));
+        when(converter.convert(javaTestQuestion)).thenReturn(javaQuestionData);
+        when(converter.convert(springTestQuestion)).thenReturn(springQuestionData);
+        //when
+        List<QuestionData> allQuestions = service.findAllQuestions();
+        //then
+        verify(repository).findAll();
+        assertEquals(2, allQuestions.size());
+        allQuestions.forEach(questionData -> {
+            if(javaQuestionData.question().equals(questionData.question())) {
+                assertEquals(javaQuestionData.answer(), questionData.answer());
+                assertEquals(javaQuestionData.level(), questionData.level());
+                assertEquals(javaQuestionData.technology(), questionData.technology());
+            } else if(springQuestionData.question().equals(questionData.question())) {
+                assertEquals(springQuestionData.answer(), questionData.answer());
+                assertEquals(springQuestionData.level(), questionData.level());
+                assertEquals(springQuestionData.technology(), questionData.technology());
+            }
+        });
     }
 
 }
