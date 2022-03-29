@@ -16,7 +16,7 @@ import java.util.List;
  * This class is responsible for handling incoming REST calls for interview questions.
  * Example URL could be as short as:
  * http://localhost:8080/questions,
- * which will return only Java interview questions for a Junior Java Developer.
+ * which will return all available questions for all levels and technologies.
  * Additionally, URL could have parameters that will narrow search down to specific technologies:
  * level - level of complexity; could be JUNIOR, MIDDLE, SENIOR;
  * hasJava - specifies whether Java questions should be included;
@@ -38,11 +38,11 @@ public class InterviewQuestionController {
      *
      * @param level         - JUNIOR, MIDDLE or SENIOR level query parameter that will determine
      *                      the complexity of the questions. Default value is JUNIOR.
-     * @param hasJava       - boolean value that includes or excludes Java questions. Default value is true;
+     * @param hasJava       - boolean value that includes or excludes Java questions. Default value is false;
      * @param hasSpring     - determines whether Spring Framework questions should be included.
      * @param hasSql        - determines whether Sql questions should be included.
      * @param hasJavaScript - determines whether JavaScript questions should be included.
-     * @return interview questions and answers in a JSON form.
+     * @return interview questions and answers in a JSON format.
      */
     @GetMapping("/questions")
     public List<QuestionData> queryInterviewQuestions(@RequestParam(required = false) Level level,
