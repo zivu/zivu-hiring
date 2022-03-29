@@ -190,6 +190,7 @@ class QuestionServiceTest {
         Question springTestQuestion = new Question(2L, "spring test question", "spring test answer", SENIOR, JAVA);
         QuestionData javaQuestionData = new QuestionData(javaTestQuestion.getQuestion(), javaTestQuestion.getAnswer(), javaTestQuestion.getLevel(), javaTestQuestion.getTechnology());
         QuestionData springQuestionData = new QuestionData(springTestQuestion.getQuestion(), springTestQuestion.getAnswer(), springTestQuestion.getLevel(), springTestQuestion.getTechnology());
+        List<QuestionData> expectedResult = List.of(javaQuestionData, springQuestionData);
         when(repository.findAll()).thenReturn(List.of(javaTestQuestion, springTestQuestion));
         when(converter.convert(javaTestQuestion)).thenReturn(javaQuestionData);
         when(converter.convert(springTestQuestion)).thenReturn(springQuestionData);
@@ -198,17 +199,7 @@ class QuestionServiceTest {
         //then
         verify(repository).findAll();
         assertEquals(2, allQuestions.size());
-        allQuestions.forEach(questionData -> {
-            if(javaQuestionData.question().equals(questionData.question())) {
-                assertEquals(javaQuestionData.answer(), questionData.answer());
-                assertEquals(javaQuestionData.level(), questionData.level());
-                assertEquals(javaQuestionData.technology(), questionData.technology());
-            } else if(springQuestionData.question().equals(questionData.question())) {
-                assertEquals(springQuestionData.answer(), questionData.answer());
-                assertEquals(springQuestionData.level(), questionData.level());
-                assertEquals(springQuestionData.technology(), questionData.technology());
-            }
-        });
+        assertEquals(expectedResult, allQuestions);
     }
 
 }
