@@ -38,6 +38,7 @@ public class InterviewQuestionController {
      *
      * @param level         - JUNIOR, MIDDLE or SENIOR level query parameter that will determine
      *                      the complexity of the questions. Default value is JUNIOR.
+     * @param number        - how many questions should be generated for every technology.
      * @param hasJava       - boolean value that includes or excludes Java questions. Default value is false;
      * @param hasSpring     - determines whether Spring Framework questions should be included.
      * @param hasSql        - determines whether Sql questions should be included.
@@ -45,19 +46,15 @@ public class InterviewQuestionController {
      * @return interview questions and answers in a JSON format.
      */
     @GetMapping("/questions")
-    public List<QuestionData> queryInterviewQuestions(@RequestParam(required = false) Level level,
+    public List<QuestionData> queryInterviewQuestions(@RequestParam Level level,
+                                                      @RequestParam int number,
                                                       @RequestParam(required = false) boolean hasJava,
                                                       @RequestParam(required = false) boolean hasSpring,
                                                       @RequestParam(required = false) boolean hasSql,
                                                       @RequestParam(required = false) boolean hasJavaScript) {
-        log.debug("received the following query params: level = {}, hasJava = {}, " +
-                "hasSpring = {}, hasSql = {}, hasJavaScript = {}", level, hasJava, hasSpring, hasSql, hasJavaScript);
-        List<QuestionData> questions;
-        if (null == level) {
-            questions = service.findAllQuestions();
-        } else {
-            questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
-        }
+        log.debug("received the following query params: level = {}, number = {}, hasJava = {}, " +
+                "hasSpring = {}, hasSql = {}, hasJavaScript = {}", level, number, hasJava, hasSpring, hasSql, hasJavaScript);
+        List<QuestionData> questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
         log.debug("collected the following questions for the interview: {}", questions);
         return questions;
     }
