@@ -42,9 +42,26 @@ class QuestionServiceTest {
     public void shouldThrowIAEWhenProvidedWithNullLevel() {
         //given
         Level nullLevel = null;
+        int number = 0;
         //when-then
         assertThrows(IllegalArgumentException.class, () -> {
-           service.findQuestions(nullLevel, false, false, false, false);
+            service.findQuestions(nullLevel, number, false, false, false, false);
+        });
+    }
+
+    @SuppressWarnings("all")
+    @Test
+    public void shouldThrowIAEWhenNoTechnologyChosen() {
+        //given
+        Level level = MIDDLE;
+        boolean hasJava = false;
+        boolean hasSpring = false;
+        boolean hasSql = false;
+        boolean hasJavaScript = false;
+        int number = 0;
+        //when-then
+        assertThrows(IllegalArgumentException.class, () -> {
+           service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         });
     }
 
@@ -53,14 +70,17 @@ class QuestionServiceTest {
     public void shouldReturnJuniorJavaQuestionsWhenJuniorJavaRequested() {
         //given
         Level level = JUNIOR;
+        int number = 0;
         boolean hasJava = true;
         boolean hasSpring = false;
         boolean hasSql = false;
         boolean hasJavaScript = false;
-        Question interviewQuestion = new Question(1L, "test java question", "test answer", JUNIOR, JAVA);
-        when(repository.findByLevelAndTechnologyIn(JUNIOR, List.of(JAVA))).thenReturn(List.of(interviewQuestion));
+        Question q = new Question(1L, "test java question", "test answer", JUNIOR, JAVA);
+        QuestionData questionData = new QuestionData(q.getQuestion(), q.getAnswer(), q.getLevel(), q.getTechnology());
+        when(converter.convert(q)).thenReturn(questionData);
+        when(repository.findByLevelAndTechnologyIn(JUNIOR, List.of(JAVA))).thenReturn(List.of(q));
         //when
-        List<QuestionData> questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
+        List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
         assertEquals(JUNIOR, questions.get(0).level());
         assertEquals(JAVA, questions.get(0).technology());
@@ -71,14 +91,17 @@ class QuestionServiceTest {
     public void shouldReturnSpringMiddleQuestionsWhenThoseAreRequested() {
         //given
         Level level = MIDDLE;
+        int number = 0;
         boolean hasJava = false;
         boolean hasSpring = true;
         boolean hasSql = false;
         boolean hasJavaScript = false;
-        Question interviewQuestion = new Question(1L, "test spring question", "test answer", MIDDLE, SPRING);
-        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(SPRING))).thenReturn(List.of(interviewQuestion));
+        Question q = new Question(1L, "test spring question", "test answer", MIDDLE, SPRING);
+        QuestionData questionData = new QuestionData(q.getQuestion(), q.getAnswer(), q.getLevel(), q.getTechnology());
+        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(SPRING))).thenReturn(List.of(q));
+        when(converter.convert(q)).thenReturn(questionData);
         //when
-        List<QuestionData> questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
+        List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
         assertEquals(MIDDLE, questions.get(0).level());
         assertEquals(SPRING, questions.get(0).technology());
@@ -89,14 +112,17 @@ class QuestionServiceTest {
     public void shouldReturnSeniorSqlQuestionsWhenThoseAreRequested() {
         //given
         Level level = SENIOR;
+        int number = 0;
         boolean hasJava = false;
         boolean hasSpring = false;
         boolean hasSql = true;
         boolean hasJavaScript = false;
-        Question interviewQuestion = new Question(1L, "test sql question", "test answer", SENIOR, SQL);
-        when(repository.findByLevelAndTechnologyIn(SENIOR, List.of(SQL))).thenReturn(List.of(interviewQuestion));
+        Question q = new Question(1L, "test sql question", "test answer", SENIOR, SQL);
+        QuestionData questionData = new QuestionData(q.getQuestion(), q.getAnswer(), q.getLevel(), q.getTechnology());
+        when(converter.convert(q)).thenReturn(questionData);
+        when(repository.findByLevelAndTechnologyIn(SENIOR, List.of(SQL))).thenReturn(List.of(q));
         //when
-        List<QuestionData> questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
+        List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
         assertEquals(SENIOR, questions.get(0).level());
         assertEquals(SQL, questions.get(0).technology());
@@ -107,14 +133,17 @@ class QuestionServiceTest {
     public void shouldReturnMiddleJavaScriptQuestionsWhenThoseAreRequested() {
         //given
         Level level = MIDDLE;
+        int number = 0;
         boolean hasJava = false;
         boolean hasSpring = false;
         boolean hasSql = false;
         boolean hasJavaScript = true;
-        Question interviewQuestion = new Question(1L, "test js question", "test answer", MIDDLE, JAVA_SCRIPT);
-        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(JAVA_SCRIPT))).thenReturn(List.of(interviewQuestion));
+        Question q = new Question(1L, "test js question", "test answer", MIDDLE, JAVA_SCRIPT);
+        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(JAVA_SCRIPT))).thenReturn(List.of(q));
+        QuestionData questionData = new QuestionData(q.getQuestion(), q.getAnswer(), q.getLevel(), q.getTechnology());
+        when(converter.convert(q)).thenReturn(questionData);
         //when
-        List<QuestionData> questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
+        List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
         assertEquals(MIDDLE, questions.get(0).level());
         assertEquals(JAVA_SCRIPT, questions.get(0).technology());
@@ -125,6 +154,7 @@ class QuestionServiceTest {
     public void shouldReturnJuniorJavaAndSpringQuestionsWhenThoseAreRequested() {
         //given
         Level level = JUNIOR;
+        int number = 0;
         boolean hasJava = true;
         boolean hasSpring = true;
         boolean hasSql = false;
@@ -132,11 +162,15 @@ class QuestionServiceTest {
         Question javaQuestion = new Question(1L, "test java question", "test answer", JUNIOR, JAVA);
         Question springQuestion = new Question(2L, "test spring question", "test answer", JUNIOR, SPRING);
         when(repository.findByLevelAndTechnologyIn(JUNIOR, List.of(JAVA, SPRING))).thenReturn(List.of(javaQuestion, springQuestion));
+        QuestionData javaQuestionData = new QuestionData(javaQuestion.getQuestion(), javaQuestion.getAnswer(), javaQuestion.getLevel(), javaQuestion.getTechnology());
+        when(converter.convert(javaQuestion)).thenReturn(javaQuestionData);
+        QuestionData springQuestionData = new QuestionData(springQuestion.getQuestion(), springQuestion.getAnswer(), springQuestion.getLevel(), springQuestion.getTechnology());
+        when(converter.convert(springQuestion)).thenReturn(springQuestionData);
         //when
-        List<QuestionData> questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
+        List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
-        assertTrue(questions.contains(javaQuestion));
-        assertTrue(questions.contains(springQuestion));
+        assertTrue(questions.contains(javaQuestionData));
+        assertTrue(questions.contains(springQuestionData));
     }
 
     @SuppressWarnings("all")
@@ -144,6 +178,7 @@ class QuestionServiceTest {
     public void shouldReturnMiddleJavaAndSpringAndSqlQuestionsWhenThoseAreRequested() {
         //given
         Level level = MIDDLE;
+        int number = 0;
         boolean hasJava = true;
         boolean hasSpring = true;
         boolean hasSql = true;
@@ -153,7 +188,7 @@ class QuestionServiceTest {
         Question sqlQuestion = new Question(3L, "test sql question", "test answer", MIDDLE, SQL);
         when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(JAVA, SPRING, SQL))).thenReturn(List.of(javaQuestion, springQuestion, sqlQuestion));
         //when
-        List<QuestionData> questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
+        List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
         assertTrue(questions.contains(javaQuestion));
         assertTrue(questions.contains(springQuestion));
@@ -165,6 +200,7 @@ class QuestionServiceTest {
     public void shouldReturnJavaAndSpringAndSqlAndJSQuestionsWhenRequested() {
         //given
         Level level = MIDDLE;
+        int number = 0;
         boolean hasJava = true;
         boolean hasSpring = true;
         boolean hasSql = true;
@@ -175,7 +211,7 @@ class QuestionServiceTest {
         Question jsQuestion = new Question(4L, "test js question", "test answer", MIDDLE, JAVA_SCRIPT);
         when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(JAVA, SPRING, SQL, JAVA_SCRIPT))).thenReturn(List.of(javaQuestion, springQuestion, sqlQuestion, jsQuestion));
         //when
-        List<QuestionData> questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
+        List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
         assertTrue(questions.contains(javaQuestion));
         assertTrue(questions.contains(springQuestion));

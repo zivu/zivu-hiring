@@ -54,7 +54,7 @@ public class InterviewQuestionController {
                                                       @RequestParam(required = false) boolean hasJavaScript) {
         log.debug("received the following query params: level = {}, number = {}, hasJava = {}, " +
                 "hasSpring = {}, hasSql = {}, hasJavaScript = {}", level, number, hasJava, hasSpring, hasSql, hasJavaScript);
-        List<QuestionData> questions = service.findQuestions(level, hasJava, hasSpring, hasSql, hasJavaScript);
+        List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         log.debug("collected the following questions for the interview: {}", questions);
         return questions;
     }

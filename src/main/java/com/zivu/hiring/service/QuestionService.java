@@ -31,18 +31,27 @@ public class QuestionService {
      * Fetches stored interview questions through the repository interface.
      *
      * @param level         - represents complexity of questions: JUNIOR, MIDDLE, SENIOR.
+     * @param number        - how many questions should be returned.
      * @param hasJava       - points whether Java questions should be searched for.
      * @param hasSpring     - points whether Spring questions should be searched for.
      * @param hasSql        - points whether Sql questions should be searched for.
      * @param hasJavaScript - points whether JavaScript questions should be searched for.
+     * Throws IllegalArgumentException in case no technology was chosen.
      * @return list of interview questions along with answers, level of complexity and technology involved.
      */
-    public List<QuestionData> findQuestions(@NonNull Level level, boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
+    public List<QuestionData> findQuestions(@NonNull Level level, int number, boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
+        throwExceptionIfNoTechnologyChosen(hasJava, hasSpring, hasSql, hasJavaScript);
         List<Technology> technologies = collectRequestedTechnologies(hasJava, hasSpring, hasSql, hasJavaScript);
         log.info("retrieving interview questions from DB");
         List<Question> questions = repository.findByLevelAndTechnologyIn(level, technologies);
         log.info("successfully retrieved questions from DB");
         return convertToQuestionData(questions);
+    }
+
+    private void throwExceptionIfNoTechnologyChosen(boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
+        if (!hasJava && !hasSpring && !hasSql && !hasJavaScript) {
+            throw new IllegalArgumentException("At least one technology should be chosen");
+        }
     }
 
     /**
