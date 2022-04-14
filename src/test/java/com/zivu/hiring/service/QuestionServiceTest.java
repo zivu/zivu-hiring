@@ -183,16 +183,22 @@ class QuestionServiceTest {
         boolean hasSpring = true;
         boolean hasSql = true;
         boolean hasJavaScript = false;
-        Question javaQuestion = new Question(1L, "test java question", "test answer", MIDDLE, JAVA);
-        Question springQuestion = new Question(2L, "test spring question", "test answer", MIDDLE, SPRING);
-        Question sqlQuestion = new Question(3L, "test sql question", "test answer", MIDDLE, SQL);
-        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(JAVA, SPRING, SQL))).thenReturn(List.of(javaQuestion, springQuestion, sqlQuestion));
+        Question javaQ = new Question(1L, "test java question", "test answer", MIDDLE, JAVA);
+        QuestionData javaQD = new QuestionData(javaQ.getQuestion(), javaQ.getAnswer(), javaQ.getLevel(), javaQ.getTechnology());
+        when(converter.convert(javaQ)).thenReturn(javaQD);
+        Question springQ = new Question(2L, "test spring question", "test answer", MIDDLE, SPRING);
+        QuestionData springQD = new QuestionData(springQ.getQuestion(), springQ.getAnswer(), springQ.getLevel(), springQ.getTechnology());
+        when(converter.convert(springQ)).thenReturn(springQD);
+        Question sqlQ = new Question(3L, "test sql question", "test answer", MIDDLE, SQL);
+        QuestionData sqlQD = new QuestionData(sqlQ.getQuestion(), sqlQ.getAnswer(), sqlQ.getLevel(), sqlQ.getTechnology());
+        when(converter.convert(sqlQ)).thenReturn(sqlQD);
+        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(JAVA, SPRING, SQL))).thenReturn(List.of(javaQ, springQ, sqlQ));
         //when
         List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
-        assertTrue(questions.contains(javaQuestion));
-        assertTrue(questions.contains(springQuestion));
-        assertTrue(questions.contains(sqlQuestion));
+        assertTrue(questions.contains(javaQD));
+        assertTrue(questions.contains(springQD));
+        assertTrue(questions.contains(sqlQD));
     }
 
     @SuppressWarnings("all")
@@ -205,18 +211,26 @@ class QuestionServiceTest {
         boolean hasSpring = true;
         boolean hasSql = true;
         boolean hasJavaScript = true;
-        Question javaQuestion = new Question(1L, "test java question", "test answer", MIDDLE, JAVA);
-        Question springQuestion = new Question(2L, "test spring question", "test answer", MIDDLE, SPRING);
-        Question sqlQuestion = new Question(3L, "test sql question", "test answer", MIDDLE, SQL);
-        Question jsQuestion = new Question(4L, "test js question", "test answer", MIDDLE, JAVA_SCRIPT);
-        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(JAVA, SPRING, SQL, JAVA_SCRIPT))).thenReturn(List.of(javaQuestion, springQuestion, sqlQuestion, jsQuestion));
+        Question javaQ = new Question(1L, "test java question", "test answer", MIDDLE, JAVA);
+        QuestionData javaQD = new QuestionData(javaQ.getQuestion(), javaQ.getAnswer(), javaQ.getLevel(), javaQ.getTechnology());
+        when(converter.convert(javaQ)).thenReturn(javaQD);
+        Question springQ = new Question(2L, "test spring question", "test answer", MIDDLE, SPRING);
+        QuestionData springQD = new QuestionData(springQ.getQuestion(), springQ.getAnswer(), springQ.getLevel(), springQ.getTechnology());
+        when(converter.convert(springQ)).thenReturn(springQD);
+        Question sqlQ = new Question(3L, "test sql question", "test answer", MIDDLE, SQL);
+        QuestionData sqlQD = new QuestionData(sqlQ.getQuestion(), sqlQ.getAnswer(), sqlQ.getLevel(), sqlQ.getTechnology());
+        when(converter.convert(sqlQ)).thenReturn(sqlQD);
+        Question jsQ = new Question(4L, "test js question", "test answer", MIDDLE, JAVA_SCRIPT);
+        QuestionData jsQD = new QuestionData(jsQ.getQuestion(), jsQ.getAnswer(), jsQ.getLevel(), jsQ.getTechnology());
+        when(converter.convert(jsQ)).thenReturn(jsQD);
+        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(JAVA, SPRING, SQL, JAVA_SCRIPT))).thenReturn(List.of(javaQ, springQ, sqlQ, jsQ));
         //when
         List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
-        assertTrue(questions.contains(javaQuestion));
-        assertTrue(questions.contains(springQuestion));
-        assertTrue(questions.contains(sqlQuestion));
-        assertTrue(questions.contains(jsQuestion));
+        assertTrue(questions.contains(javaQD));
+        assertTrue(questions.contains(springQD));
+        assertTrue(questions.contains(sqlQD));
+        assertTrue(questions.contains(jsQD));
     }
 
     @Test
