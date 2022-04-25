@@ -42,15 +42,17 @@ public class QuestionService {
     public List<QuestionData> findQuestions(@NonNull Level level, int number, boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
         throwExceptionIfNoTechnologyChosen(hasJava, hasSpring, hasSql, hasJavaScript);
         List<Technology> technologies = collectRequestedTechnologies(hasJava, hasSpring, hasSql, hasJavaScript);
-        log.info("retrieving interview questions from DB");
+        log.info("Retrieving interview questions from DB");
         List<Question> questions = repository.findByLevelAndTechnologyIn(level, technologies);
-        log.info("successfully retrieved questions from DB");
+        log.info("Successfully retrieved questions from DB");
         return convertToQuestionData(questions);
     }
 
     private void throwExceptionIfNoTechnologyChosen(boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
         if (!hasJava && !hasSpring && !hasSql && !hasJavaScript) {
-            throw new IllegalArgumentException("At least one technology should be chosen");
+            throw new IllegalArgumentException("At least one technology should be specified as \"true\". " +
+                    "Add hasJava, hasSpring, hasSql or hasJavaScript URL parameter. " +
+                    "For example: http://localhost:8080/questions?level=JUNIOR&number=1&hasJava=true");
         }
     }
 

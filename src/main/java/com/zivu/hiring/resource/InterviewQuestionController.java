@@ -14,15 +14,6 @@ import java.util.List;
 
 /**
  * This class is responsible for handling incoming REST calls for interview questions.
- * Example URL could be as short as:
- * http://localhost:8080/questions,
- * which will return all available questions for all levels and technologies.
- * Additionally, URL could have parameters that will narrow search down to specific technologies:
- * level - level of complexity; could be JUNIOR, MIDDLE, SENIOR;
- * hasJava - specifies whether Java questions should be included;
- * hasSpring - should Spring Framework questions be included?
- * hasSql - should SQL questions be included?
- * hasJavaScript - should JavaScript questions be included?
  * Example of query with parameters:
  * http://localhost:8080/questions?level=JUNIOR&hasava=true?hasspring=false&hassql=false&hasjavascript=false
  */
@@ -34,12 +25,14 @@ public class InterviewQuestionController {
     private final QuestionService service;
 
     /**
-     * Queries service for interview questions according to a requested level of complexity and technologies.
+     * Fetches specified number of interview questions that fit to a requested level of complexity and technologies.
+     * level, number and at least one technology should be chosen, otherwise IllegalArgumentException will be thrown.
      *
      * @param level         - JUNIOR, MIDDLE or SENIOR level query parameter that will determine
-     *                      the complexity of the questions. Default value is JUNIOR.
-     * @param number        - how many questions should be generated for every technology.
-     * @param hasJava       - boolean value that includes or excludes Java questions. Default value is false;
+     *                      the complexity of the questions.
+     * @param number        - how many questions should be generated for every technology. If a provided number will
+     *                      exceed a number of questions stored, then only available questions will be returned.
+     * @param hasJava       - boolean value that includes or excludes Java questions.
      * @param hasSpring     - determines whether Spring Framework questions should be included.
      * @param hasSql        - determines whether Sql questions should be included.
      * @param hasJavaScript - determines whether JavaScript questions should be included.
@@ -52,10 +45,10 @@ public class InterviewQuestionController {
                                                       @RequestParam(required = false) boolean hasSpring,
                                                       @RequestParam(required = false) boolean hasSql,
                                                       @RequestParam(required = false) boolean hasJavaScript) {
-        log.debug("received the following query params: level = {}, number = {}, hasJava = {}, " +
+        log.debug("Received the following query params: level = {}, number = {}, hasJava = {}, " +
                 "hasSpring = {}, hasSql = {}, hasJavaScript = {}", level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
-        log.debug("collected the following questions for the interview: {}", questions);
+        log.debug("Collected the following questions for the interview: {}", questions);
         return questions;
     }
 
