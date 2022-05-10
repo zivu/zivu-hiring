@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Queries DB for interview questions with specified level of complexity (JUNIOR, MIDDLE, SENIOR)
@@ -41,9 +43,9 @@ public class QuestionService {
      */
     public List<QuestionData> findQuestions(@NonNull Level level, int number, boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
         throwExceptionIfNoTechnologyChosen(hasJava, hasSpring, hasSql, hasJavaScript);
-        List<Technology> technologies = collectRequestedTechnologies(hasJava, hasSpring, hasSql, hasJavaScript);
+        Set<Technology> technologies = collectRequestedTechnologies(hasJava, hasSpring, hasSql, hasJavaScript);
         log.info("Retrieving interview questions from DB");
-        List<Question> questions = repository.findByLevelAndTechnologyIn(level, technologies);
+        List<Question> questions = repository.findFiveNewQuestionsForLevelAndEveryTechnology(level, technologies);
         log.info("Successfully retrieved questions from DB");
         return convertToQuestionData(questions);
     }
@@ -75,9 +77,9 @@ public class QuestionService {
         return questionData;
     }
 
-    private List<Technology> collectRequestedTechnologies(boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
+    private Set<Technology> collectRequestedTechnologies(boolean hasJava, boolean hasSpring, boolean hasSql, boolean hasJavaScript) {
         log.info("Preparing a list of technologies for DB request");
-        List<Technology> technologies = new ArrayList<>(4);
+        Set<Technology> technologies = new HashSet<>(4);
         if (hasJava) {
             technologies.add(Technology.JAVA);
         }

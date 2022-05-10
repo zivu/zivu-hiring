@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.zivu.hiring.model.Level.*;
 import static com.zivu.hiring.model.Technology.*;
@@ -78,7 +79,7 @@ class QuestionServiceTest {
         Question q = new Question(1L, "test java question", "test answer", JUNIOR, JAVA);
         QuestionData questionData = new QuestionData(q.getQuestion(), q.getAnswer(), q.getLevel(), q.getTechnology());
         when(converter.convert(q)).thenReturn(questionData);
-        when(repository.findByLevelAndTechnologyIn(JUNIOR, List.of(JAVA))).thenReturn(List.of(q));
+        when(repository.findFiveNewQuestionsForLevelAndEveryTechnology(JUNIOR, Set.of((JAVA)))).thenReturn(List.of(q));
         //when
         List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
@@ -98,7 +99,7 @@ class QuestionServiceTest {
         boolean hasJavaScript = false;
         Question q = new Question(1L, "test spring question", "test answer", MIDDLE, SPRING);
         QuestionData questionData = new QuestionData(q.getQuestion(), q.getAnswer(), q.getLevel(), q.getTechnology());
-        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(SPRING))).thenReturn(List.of(q));
+        when(repository.findFiveNewQuestionsForLevelAndEveryTechnology(MIDDLE, Set.of(SPRING))).thenReturn(List.of(q));
         when(converter.convert(q)).thenReturn(questionData);
         //when
         List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
@@ -120,7 +121,7 @@ class QuestionServiceTest {
         Question q = new Question(1L, "test sql question", "test answer", SENIOR, SQL);
         QuestionData questionData = new QuestionData(q.getQuestion(), q.getAnswer(), q.getLevel(), q.getTechnology());
         when(converter.convert(q)).thenReturn(questionData);
-        when(repository.findByLevelAndTechnologyIn(SENIOR, List.of(SQL))).thenReturn(List.of(q));
+        when(repository.findFiveNewQuestionsForLevelAndEveryTechnology(SENIOR, Set.of(SQL))).thenReturn(List.of(q));
         //when
         List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
@@ -139,7 +140,7 @@ class QuestionServiceTest {
         boolean hasSql = false;
         boolean hasJavaScript = true;
         Question q = new Question(1L, "test js question", "test answer", MIDDLE, JAVA_SCRIPT);
-        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(JAVA_SCRIPT))).thenReturn(List.of(q));
+        when(repository.findFiveNewQuestionsForLevelAndEveryTechnology(MIDDLE, Set.of(JAVA_SCRIPT))).thenReturn(List.of(q));
         QuestionData questionData = new QuestionData(q.getQuestion(), q.getAnswer(), q.getLevel(), q.getTechnology());
         when(converter.convert(q)).thenReturn(questionData);
         //when
@@ -161,7 +162,7 @@ class QuestionServiceTest {
         boolean hasJavaScript = false;
         Question javaQuestion = new Question(1L, "test java question", "test answer", JUNIOR, JAVA);
         Question springQuestion = new Question(2L, "test spring question", "test answer", JUNIOR, SPRING);
-        when(repository.findByLevelAndTechnologyIn(JUNIOR, List.of(JAVA, SPRING))).thenReturn(List.of(javaQuestion, springQuestion));
+        when(repository.findFiveNewQuestionsForLevelAndEveryTechnology(JUNIOR, Set.of(JAVA, SPRING))).thenReturn(List.of(javaQuestion, springQuestion));
         QuestionData javaQuestionData = new QuestionData(javaQuestion.getQuestion(), javaQuestion.getAnswer(), javaQuestion.getLevel(), javaQuestion.getTechnology());
         when(converter.convert(javaQuestion)).thenReturn(javaQuestionData);
         QuestionData springQuestionData = new QuestionData(springQuestion.getQuestion(), springQuestion.getAnswer(), springQuestion.getLevel(), springQuestion.getTechnology());
@@ -192,7 +193,7 @@ class QuestionServiceTest {
         Question sqlQ = new Question(3L, "test sql question", "test answer", MIDDLE, SQL);
         QuestionData sqlQD = new QuestionData(sqlQ.getQuestion(), sqlQ.getAnswer(), sqlQ.getLevel(), sqlQ.getTechnology());
         when(converter.convert(sqlQ)).thenReturn(sqlQD);
-        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(JAVA, SPRING, SQL))).thenReturn(List.of(javaQ, springQ, sqlQ));
+        when(repository.findFiveNewQuestionsForLevelAndEveryTechnology(MIDDLE, Set.of(JAVA, SPRING, SQL))).thenReturn(List.of(javaQ, springQ, sqlQ));
         //when
         List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
@@ -223,7 +224,7 @@ class QuestionServiceTest {
         Question jsQ = new Question(4L, "test js question", "test answer", MIDDLE, JAVA_SCRIPT);
         QuestionData jsQD = new QuestionData(jsQ.getQuestion(), jsQ.getAnswer(), jsQ.getLevel(), jsQ.getTechnology());
         when(converter.convert(jsQ)).thenReturn(jsQD);
-        when(repository.findByLevelAndTechnologyIn(MIDDLE, List.of(JAVA, SPRING, SQL, JAVA_SCRIPT))).thenReturn(List.of(javaQ, springQ, sqlQ, jsQ));
+        when(repository.findFiveNewQuestionsForLevelAndEveryTechnology(MIDDLE, Set.of(JAVA, SPRING, SQL, JAVA_SCRIPT))).thenReturn(List.of(javaQ, springQ, sqlQ, jsQ));
         //when
         List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
         //then
