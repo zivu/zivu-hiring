@@ -43,7 +43,7 @@ public class QuestionService {
         throwExceptionIfNoTechnologyChosen(hasJava, hasSpring, hasSql, hasJavaScript);
         List<Technology> technologies = collectRequestedTechnologies(hasJava, hasSpring, hasSql, hasJavaScript);
         log.info("Retrieving interview questions from DB");
-        List<Question> questions = repository.findByLevelAndTechnologyIn(level, technologies);
+        List<Question> questions = repository.findByLevelAndTechnologyInOrderByTechnology(level, technologies);
         log.info("Successfully retrieved questions from DB");
         return convertToQuestionData(questions);
     }
