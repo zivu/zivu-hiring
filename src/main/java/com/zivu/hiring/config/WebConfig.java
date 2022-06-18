@@ -6,7 +6,7 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Configuration that responsible for informing Spring about new converter.
+ * Configuration that responsible for informing Spring about the new converter.
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
