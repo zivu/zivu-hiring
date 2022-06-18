@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * This class is responsible for handling incoming REST calls for interview questions.
+ * REST controller.
  * Example of query with parameters:
- * http://localhost:8080/questions?level=JUNIOR&hasava=true?hasspring=false&hassql=false&hasjavascript=false
+ * http://localhost:8080/questions?level=junior&has_java=true?has_spring=false&has_sql=false&has_js=false
  */
 @Slf4j
 @RestController
@@ -30,24 +30,21 @@ public class InterviewQuestionController {
      *
      * @param level         - JUNIOR, MIDDLE or SENIOR level query parameter that will determine
      *                      the complexity of the questions.
-     * @param number        - how many questions should be generated for every technology. If a provided number will
-     *                      exceed a number of questions stored, then only available questions will be returned.
      * @param hasJava       - boolean value that includes or excludes Java questions.
      * @param hasSpring     - determines whether Spring Framework questions should be included.
      * @param hasSql        - determines whether Sql questions should be included.
-     * @param hasJavaScript - determines whether JavaScript questions should be included.
+     * @param hasJs         - determines whether JavaScript questions should be included.
      * @return interview questions and answers in a JSON format.
      */
     @GetMapping("/questions")
-    public List<QuestionData> queryInterviewQuestions(@RequestParam Level level,
-                                                      @RequestParam int number,
-                                                      @RequestParam(required = false) boolean hasJava,
-                                                      @RequestParam(required = false) boolean hasSpring,
-                                                      @RequestParam(required = false) boolean hasSql,
-                                                      @RequestParam(required = false) boolean hasJavaScript) {
-        log.debug("Received the following query params: level = {}, number = {}, hasJava = {}, " +
-                "hasSpring = {}, hasSql = {}, hasJavaScript = {}", level, number, hasJava, hasSpring, hasSql, hasJavaScript);
-        List<QuestionData> questions = service.findQuestions(level, number, hasJava, hasSpring, hasSql, hasJavaScript);
+    public List<QuestionData> queryInterviewQuestions(@RequestParam String level,
+                                                      @RequestParam(required = false, name = "has_java") boolean hasJava,
+                                                      @RequestParam(required = false, name = "has_spring") boolean hasSpring,
+                                                      @RequestParam(required = false, name = "has_sql") boolean hasSql,
+                                                      @RequestParam(required = false, name = "has_js") boolean hasJs) {
+        log.debug("Received the following query params: level = {}, has_java = {}, " +
+                "has_spring = {}, has_sql = {}, has_js = {}", level, hasJava, hasSpring, hasSql, hasJs);
+        List<QuestionData> questions = service.findQuestions(Level.valueOf(level.toUpperCase()), hasJava, hasSpring, hasSql, hasJs);
         log.debug("Collected the following questions for the interview: {}", questions);
         return questions;
     }

@@ -14,6 +14,6 @@ import java.util.List;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    List<Question> findByLevelAndTechnologyInOrderByTechnology(Level level, Collection<Technology> technologies);
+    List<Question> findByLevelAndTechnologyIn(Level level, Collection<Technology> technologies);
     
 }
