@@ -17,3 +17,4 @@ INSERT INTO Question(id, question, answer, level, technology) VALUES (16, 'CHECK
 INSERT INTO Question(id, question, answer, level, technology) VALUES (17, 'Why do we need indices?', 'To ensure faster retrieval of data', 'SQL', 'SENIOR');
 INSERT INTO Question(id, question, answer, level, technology) VALUES (18, 'What is hoisting?', 'Moving declarations of variables, class or function to the top', 'JS', 'SENIOR');
 INSERT INTO Question(id, question, answer, level, technology) VALUES (19, 'What is arrow function?', 'Syntax that similar in a sense to lambda in Java and helps declaring functions writing less code', 'JS', 'SENIOR');
+INSERT INTO Question(id, question, answer, level, technology) VALUES (20, 'When onload event occur?', 'When browser finishes loading the page', 'JS', 'SENIOR');
