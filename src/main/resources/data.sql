@@ -18,3 +18,5 @@ INSERT INTO Question(id, question, answer, level, technology) VALUES (17, 'Why d
 INSERT INTO Question(id, question, answer, level, technology) VALUES (18, 'What is hoisting?', 'Moving declarations of variables, class or function to the top', 'SENIOR', 'JAVA_SCRIPT');
 INSERT INTO Question(id, question, answer, level, technology) VALUES (19, 'What is arrow function?', 'Syntax that similar in a sense to lambda in Java and helps declaring functions writing less code', 'SENIOR', 'JAVA_SCRIPT');
 INSERT INTO Question(id, question, answer, level, technology) VALUES (20, 'When onload event occur?', 'When browser finishes loading the page', 'SENIOR', 'JAVA_SCRIPT');
+INSERT INTO Question(id, question, answer, level, technology) VALUES (21, 'How can we order query result?', 'By using Order by clause', 'JUNIOR', 'SQL');
+INSERT INTO Question(id, question, answer, level, technology) VALUES (22, 'What is the purpose of ''const'' keyword introdused in JS?', 'To declare constant values that cannot be redeclared or reassigned', 'JUNIOR', 'JAVA_SCRIPT');
