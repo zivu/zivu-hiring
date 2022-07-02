@@ -16,10 +16,10 @@ import java.util.List;
 /**
  * REST controller.
  * Example of query with parameters:
- * http://localhost:8080/questions?level=junior&has_java=true?has_spring=false&has_sql=false&has_js=false
+ * <a href="http://localhost:8080/questions?level=junior&has_java=true?has_spring=false&has_sql=false&has_js=false">
+ *     request technologies</a>
  * or
- * http://localhost8080/questions/all
- * to see all available questions.
+ * <a href="http://localhost8080/questions/all">request all questions</a>
  */
 @Slf4j
 @RestController
