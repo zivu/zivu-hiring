@@ -41,7 +41,7 @@ public class InterviewQuestionController {
      * @param hasJS     - determines whether JavaScript questions should be included.
      * @return interview questions and answers in a JSON format.
      */
-    @GetMapping
+    @GetMapping("/selected")
     public List<QuestionData> queryInterviewQuestions(@RequestParam String level,
                                                       @RequestParam(required = false, name = "has_java") boolean hasJava,
                                                       @RequestParam(required = false, name = "has_spring") boolean hasSpring,
