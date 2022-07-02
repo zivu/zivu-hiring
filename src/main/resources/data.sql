@@ -20,4 +20,6 @@ INSERT INTO Question(id, question, answer, level, technology) VALUES (19, 'What 
 INSERT INTO Question(id, question, answer, level, technology) VALUES (20, 'When onload event occur?', 'When browser finishes loading the page', 'SENIOR', 'JAVA_SCRIPT');
 INSERT INTO Question(id, question, answer, level, technology) VALUES (21, 'How can we order query result?', 'By using Order by clause', 'JUNIOR', 'SQL');
 INSERT INTO Question(id, question, answer, level, technology) VALUES (22, 'What is the purpose of ''const'' keyword introdused in JS?', 'To declare constant values that cannot be redeclared or reassigned', 'JUNIOR', 'JAVA_SCRIPT');
-INSERT INTO Question(id, question, answer, level, technology) VALUES (23, 'Could you compare different dependency injection types in Spring?', 'Field, setter and constructor DI.', 'MIDDLE', 'SPRING');
+INSERT INTO Question(id, question, answer, level, technology) VALUES (23, 'Could you compare different dependency injection types in Spring? Which one is better?', 'Field, setter and constructor DI. Constructor is a good one as an object will have all needed dependencies and could be immutalbe.', 'MIDDLE', 'SPRING');
+INSERT INTO Question(id, question, answer, level, technology) VALUES (24, 'How can we produce average result in SQL?', 'AVG(column_name) function', 'MIDDLE', 'SQL');
+INSERT INTO Question(id, question, answer, level, technology) VALUES (25, 'What is a callback?', 'Function that we pass as an argument to another one to be called later.', 'MIDDLE', 'JAVA_SCRIPT');
