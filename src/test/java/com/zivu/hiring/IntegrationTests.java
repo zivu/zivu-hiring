@@ -2,6 +2,7 @@ package com.zivu.hiring;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -14,6 +15,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 /**
@@ -117,6 +119,17 @@ class IntegrationTests {
 				.andExpect(jsonPath("$[*].technology", hasItems("JAVA", "SPRING", "SQL", "JAVA_SCRIPT")))
 				.andExpect(jsonPath("$[*].question", everyItem(notNullValue())))
 				.andExpect(jsonPath("$[*].answer", everyItem(notNullValue())));
+	}
+
+	@SneakyThrows
+	@Test
+	public void shouldReturnAllQuestions() {
+		this.mockMvc.perform(get("/questions/all"))
+				.andExpect(status().is2xxSuccessful())
+				.andExpect(jsonPath("$[*].level", hasItems("JUNIOR", "MIDDLE", "SENIOR")))
+				.andExpect(jsonPath("$[*].technology", hasItems("JAVA", "SPRING", "SQL", "JAVA_SCRIPT")))
+				.andExpect(jsonPath("$[*].answer", everyItem(notNullValue())))
+				.andExpect(jsonPath("$[*].question", everyItem(notNullValue())));
 	}
 
 }
