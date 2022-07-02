@@ -1,4 +1,4 @@
-package com.zivu.hiring;
+package com.zivu.hiring.resource;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
