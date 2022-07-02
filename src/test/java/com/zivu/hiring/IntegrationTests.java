@@ -2,8 +2,9 @@ package com.zivu.hiring;
 
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -33,79 +34,86 @@ class IntegrationTests {
 	}
 
 	@SneakyThrows
-	@Test
-	public void shouldReturnJuniorJavaQuestionsWhenJavaParameterIsProvided() {
-		this.mockMvc.perform(get("/questions").param("has_java", "true"))
-				.andExpect(jsonPath("$[*].level", everyItem(is("JUNIOR"))))
+	@ParameterizedTest
+	@ValueSource(strings = {"JUNIOR", "MIDDLE", "SENIOR"})
+	public void shouldReturnJavaQuestionsWhenJavaParameterAndLevelProvided(String level) {
+		this.mockMvc.perform(get("/questions/selected").param("has_java", "true"))
+				.andExpect(jsonPath("$[*].level", everyItem(is(level))))
 				.andExpect(jsonPath("$[*].technology", everyItem(is("JAVA"))))
 				.andExpect(jsonPath("$[*].question", everyItem(notNullValue())))
 				.andExpect(jsonPath("$[*].answer", everyItem(notNullValue())));
 	}
 
 	@SneakyThrows
-	@Test
-	public void shouldReturnJuniorSpringQuestionsWhenSpringParamIsProvided() {
-		this.mockMvc.perform(get("/questions").param("has_spring", "true"))
-				.andExpect(jsonPath("$[*].level", everyItem(is("JUNIOR"))))
+	@ParameterizedTest
+	@ValueSource(strings = {"JUNIOR", "MIDDLE", "SENIOR"})
+	public void shouldReturnSpringQuestionsWhenSpringParamAndLevelProvided(String level) {
+		this.mockMvc.perform(get("/questions/selected").param("has_spring", "true"))
+				.andExpect(jsonPath("$[*].level", everyItem(is(level))))
 				.andExpect(jsonPath("$[*].technology", everyItem(is("SPRING"))))
 				.andExpect(jsonPath("$[*].question", everyItem(notNullValue())))
 				.andExpect(jsonPath("$[*].answer", everyItem(notNullValue())));
 	}
 
 	@SneakyThrows
-	@Test
-	public void shouldReturnJuniorSqlQuestionsWhenSqlParameterIsProvided() {
-		this.mockMvc.perform(get("/questions").param("has_sql", "true"))
-				.andExpect(jsonPath("$[*].level", everyItem(is("JUNIOR"))))
+	@ParameterizedTest
+	@ValueSource(strings = {"JUNIOR", "MIDDLE", "SENIOR"})
+	public void shouldReturnSqlQuestionsWhenSqlParameterAndLevelProvided(String level) {
+		this.mockMvc.perform(get("/questions/selected").param("has_sql", "true"))
+				.andExpect(jsonPath("$[*].level", everyItem(is(level))))
 				.andExpect(jsonPath("$[*].technology", everyItem(is("SQL"))))
 				.andExpect(jsonPath("$[*].question", everyItem(notNullValue())))
 				.andExpect(jsonPath("$[*].answer", everyItem(notNullValue())));
 	}
 
 	@SneakyThrows
-	@Test
-	public void shouldReturnJuniorJavaScriptQuestionsWhenJSParameterIsProvided() {
-		this.mockMvc.perform(get("/questions").param("has_js", "true"))
-				.andExpect(jsonPath("$[*].level", everyItem(is("JUNIOR"))))
+	@ParameterizedTest
+	@ValueSource(strings = {"JUNIOR", "MIDDLE", "SENIOR"})
+	public void shouldReturnJavaScriptQuestionsWhenJSParameterAndLevelProvided(String level) {
+		this.mockMvc.perform(get("/questions/selected").param("has_js", "true"))
+				.andExpect(jsonPath("$[*].level", everyItem(is(level))))
 				.andExpect(jsonPath("$[*].technology", everyItem(is("JAVA_SCRIPT"))))
 				.andExpect(jsonPath("$[*].question", everyItem(notNullValue())))
 				.andExpect(jsonPath("$[*].answer", everyItem(notNullValue())));
 	}
 
 	@SneakyThrows
-	@Test
-	public void shouldReturnJuniorJavaAndSpringQuestionsWhenThoseTechnologiesRequested() {
-		this.mockMvc.perform(get("/questions").param("has_java", "true")
+	@ParameterizedTest
+	@ValueSource(strings = {"JUNIOR", "MIDDLE", "SENIOR"})
+	public void shouldReturnJavaAndSpringQuestionsWhenThoseTechnologiesRequested(String level) {
+		this.mockMvc.perform(get("/questions/selected").param("has_java", "true")
 				.param("has_spring", "true")
-				.param("level", "junior"))
-				.andExpect(jsonPath("$[*].level", everyItem(is("JUNIOR"))))
+				.param("level", level))
+				.andExpect(jsonPath("$[*].level", everyItem(is(level))))
 				.andExpect(jsonPath("$[*].technology", hasItems("JAVA", "SPRING")))
 				.andExpect(jsonPath("$[*].question", everyItem(notNullValue())))
 				.andExpect(jsonPath("$[*].answer", everyItem(notNullValue())));
 	}
 
 	@SneakyThrows
-	@Test
-	public void shouldReturnJuniorJavaAndSpringAndSqlQuestionsWhenThoseTechnologiesRequested() {
-		this.mockMvc.perform(get("/questions").param("has_java", "true")
+	@ParameterizedTest
+	@ValueSource(strings = {"JUNIOR", "MIDDLE", "SENIOR"})
+	public void shouldReturnJavaAndSpringAndSqlQuestionsWhenThoseTechnologiesRequested(String level) {
+		this.mockMvc.perform(get("/questions/selected").param("has_java", "true")
 						.param("has_spring", "true")
 						.param("has_sql", "true")
-						.param("level", "junior"))
-				.andExpect(jsonPath("$[*].level", everyItem(is("JUNIOR"))))
+						.param("level", level))
+				.andExpect(jsonPath("$[*].level", everyItem(is(level))))
 				.andExpect(jsonPath("$[*].technology", hasItems("JAVA", "SPRING", "SQL")))
 				.andExpect(jsonPath("$[*].question", everyItem(notNullValue())))
 				.andExpect(jsonPath("$[*].answer", everyItem(notNullValue())));
 	}
 
 	@SneakyThrows
-	@Test
-	public void shouldReturnJuniorJavaAndSpringAndSqlAndJavaScriptQuestionsWhenRequested() {
-		this.mockMvc.perform(get("/questions").param("has_java", "true")
+	@ParameterizedTest
+	@ValueSource(strings = {"JUNIOR", "MIDDLE", "SENIOR"})
+	public void shouldReturnJavaAndSpringAndSqlAndJavaScriptQuestionsWhenRequested(String level) {
+		this.mockMvc.perform(get("/questions/selected").param("has_java", "true")
 						.param("has_spring", "true")
 						.param("has_js", "true")
 						.param("has_sql", "true")
-						.param("level", "junior"))
-				.andExpect(jsonPath("$[*].level", everyItem(is("JUNIOR"))))
+						.param("level", level))
+				.andExpect(jsonPath("$[*].level", everyItem(is(level))))
 				.andExpect(jsonPath("$[*].technology", hasItems("JAVA", "SPRING", "SQL", "JAVA_SCRIPT")))
 				.andExpect(jsonPath("$[*].question", everyItem(notNullValue())))
 				.andExpect(jsonPath("$[*].answer", everyItem(notNullValue())));
