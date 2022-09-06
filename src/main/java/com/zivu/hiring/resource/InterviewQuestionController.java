@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * REST controller.
  * Example of query with parameters:
- * <a href="http://localhost:8080/questions?level=junior&has_java=true&has_spring=false&has_sql=false&has_js=false">
+ * <a href="http://localhost:8080/questions/selected?level=junior&has_java=true&has_spring=false&has_sql=false&has_js=false">
  *     request technologies</a>
  * or
  * <a href="http://localhost8080/questions/all">request all questions</a>
