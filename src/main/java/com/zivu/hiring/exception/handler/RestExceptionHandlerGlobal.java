@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * Handles exceptions that arise during REST calls enriching them with useful information.
  */
 @ControllerAdvice
-public class RestExceptionHandler {
+public class RestExceptionHandlerGlobal {
 
     @ExceptionHandler({IllegalArgumentException.class, MissingServletRequestParameterException.class})
     public ResponseEntity<String> handleGenericExceptions(Exception exception) {
